@@ -81,6 +81,53 @@ log_tpm = log_tpm.drop(['Cultivar'], axis=1)
 
 
 #---------------------------------------------------------------------------------------------------
+# Create a mean variance plot
+#---------------------------------------------------------------------------------------------------
+
+# Calculate the mean expression level for every gene
+mean_expression = log_tpm.mean(axis=0)
+# Calculate the variance for every gene
+var_expression = log_tpm.var(axis=0)
+
+# Create a mean variance plot 
+fig, ax = plt.subplots(figsize = (10, 8))
+ax.scatter(x = mean_expression, y = var_expression, 
+                s = 8, c = 'black', alpha = 0.7)
+ax.axhline(y=1, c='red')
+ax.axvline(x=2, c='red')
+ax.set_xlabel("Mean Gene Expression", fontsize = 20)
+ax.set_ylabel("Variance of Gene Expression", fontsize = 20)
+ax.set_title("Variance vs Mean", fontsize = 24)
+ax.tick_params(axis='both', labelsize=14)
+ax.set_xscale('log', basex=2)
+ax.set_yscale('log', basey=2)
+plt.savefig("./Data_EDA/mean_variance_plot.png")
+
+# Create a plot of standard deviation/mean vs mean
+sd_expression = np.sqrt(var_expression)
+fig, ax = plt.subplots(figsize = (10, 8))
+ax.scatter(x = mean_expression, y = sd_expression/mean_expression, 
+                s = 8, c = 'black', alpha = 0.7)
+ax.set_xlabel("Mean Expression", fontsize = 20)
+ax.set_ylabel("SDEV/Mean", fontsize = 20)
+ax.set_title("Mean-Adjusted SDEV vs Mean", fontsize = 24)
+ax.tick_params(axis='both', labelsize=14)
+ax.set_xscale('log', basex=2)
+ax.set_yscale('log', basey=2)
+plt.savefig("./Data_EDA/sd_mean.png")
+
+# Create a plot of the distribution of the standard deviation adjusted by mean
+sd_mean = sd_expression/mean_expression
+fig, ax = plt.subplots(figsize=(10,8))
+sns.distplot(variance_mean, kde=True, color = 'darkblue', 
+             kde_kws={'linewidth': 4}, ax = ax)
+ax.set_xlabel('CV per Gene', size = 18)
+ax.set_ylabel('Density', size = 18)
+ax.set_title('Coefficient of Variation', size = 20)
+ax.tick_params(axis='both', labelsize=14)
+plt.savefig("./Data_EDA/CV_distribution_original_tpm.png")
+
+#---------------------------------------------------------------------------------------------------
 # Perform dimensionality reduction
 #---------------------------------------------------------------------------------------------------
 
