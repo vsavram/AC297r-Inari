@@ -31,6 +31,7 @@ def update_matrix(cluster_list, matrix=None, count=None):
     count += 1
     return matrix, count
 
+# Function to get a consensus matrix from a list of cluster lists
 def get_consensus_matrix(cluster_lists):
     num_genes = len(cluster_lists[0])
 
@@ -45,19 +46,41 @@ def get_consensus_matrix(cluster_lists):
     # Divides every entry of the matric by count to get the percentage consensus
     return matrix / count
 
+# Function to get list of landmark genes
+# Not needed when deriving consensus clusters
 def get_indices_of_landmark(matrix_perc, threshold):
     i_indices, j_indices = np.where(matrix_perc > threshold)
     all_indices = np.append(i_indices, j_indices)
     return np.unique(all_indices)
 
-# 1-2, 1-5, 5-6, 8-9, 9-10
-# [1, 2, 5], [8, 9, 10]
-# Put [1, 2, 5] back in clusters, to find the center, say 2
-# 2 is the landmark genes
+# Function to get consensus clusters at a given threshold
+# Returns a list of sets, e.g. [{0, 4, 5, 7, 8, 9, 10}, {3, 1, 2, 11}]
+def get_clusters(matrix_perc, threshold):
+    i_indices, j_indices = np.where(matrix_perc > threshold)
+    clusters = []
+
+    def add_to_cluster(i, j, clusters):
+        for c in clusters:
+            if i in c or j in c:
+                # Add both since sets do not add duplicate
+                c.add(i)
+                c.add(j)
+
+                # if found a set
+                return
+        new_cluster = set([i, j])
+        clusters.append(new_cluster)
+
+    for (i, j) in zip(i_indices, j_indices):
+        print(i, j)
+        add_to_cluster(i, j, clusters)
+
+    return clusters
+
 
 if __name__ == "__main__":
     c_lists = [generate_cluster_list() for i in range(10)]
     matrix_perc = get_consensus_matrix(c_lists)
     print(matrix_perc)
-    landmark_indices = get_indices_of_landmark(matrix_perc, 0.3)
-    print(landmark_indices)
+    clusters = get_clusters(matrix_perc, 0.3)
+    print(clusters)
