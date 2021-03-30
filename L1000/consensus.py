@@ -1,4 +1,7 @@
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 # Update accordingly.
 num_genes = 12
@@ -77,6 +80,14 @@ def get_clusters(matrix_perc, threshold):
 
     return clusters
 
+# Function to show heatmap without the lower triangle
+def show_heatmap(matrix_perc):
+    mask = np.zeros_like(matrix_perc)
+    mask[np.tril_indices_from(mask)] = True
+    with sns.axes_style("white"):
+        f, ax = plt.subplots(figsize=(7, 5))
+        ax = sns.heatmap(matrix_perc, mask=mask, annot=True, square=True)
+        plt.show()
 
 if __name__ == "__main__":
     c_lists = [generate_cluster_list() for i in range(10)]
@@ -84,3 +95,7 @@ if __name__ == "__main__":
     print(matrix_perc)
     clusters = get_clusters(matrix_perc, 0.3)
     print(clusters)
+    show_heatmap(matrix_perc)
+
+    # ax = sns.heatmap(matrix_perc, annot=True)
+    # plt.show()
