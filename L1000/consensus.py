@@ -11,9 +11,11 @@ num_clusters = 5
 # Output: list of random integers within the range of number of clusters, length
 # equals the number of genes.
 def generate_cluster_list(num_genes=num_genes, num_clusters=num_clusters):
-    return [np.random.randint(0, num_clusters) for i in range(num_genes)]
+    return [np.random.randint(-1, num_clusters) for i in range(num_genes)]
 
 # Function to update the consensus matrix given a cluster list of length num_genes.
+# e.g. [2, 5, 0, 9, 2] means that gene 0 is in cluster 2, gene 1 is in cluster 5,
+# gene 3 is in cluster 0 etc.
 # Can be used to create a matrix for the first time, or update a matrix give another
 # cluster list.
 # Output: A tuple of the updated consensus matrix and the total number of times the
@@ -27,7 +29,11 @@ def update_matrix(cluster_list, matrix=None, count=None):
 
     for i, i_cluster in enumerate(cluster_list):
         # print(f"i: {i}, cluster: {i_cluster}")
+        if i_cluster == -1:
+            continue
         for j, j_cluster in enumerate(cluster_list[i+1:], start=i+1):
+            if j_cluster == -1:
+                continue
             if i_cluster == j_cluster:
                 # print(f"j: {j}, cluster: {j_cluster}")
                 matrix[i][j] += 1
@@ -90,7 +96,11 @@ def show_heatmap(matrix_perc):
         plt.show()
 
 if __name__ == "__main__":
+    # Generate random test data
     c_lists = [generate_cluster_list() for i in range(10)]
+    print(c_lists)
+
+    # Get consensus matrix of percentages
     matrix_perc = get_consensus_matrix(c_lists)
     print(matrix_perc)
     clusters = get_clusters(matrix_perc, 0.3)
