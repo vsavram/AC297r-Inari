@@ -1,9 +1,9 @@
 # Modeling the Effects of Gene Perturbations in Maize
 
-<p style="text-align: center;">
+<p align="center">
   Contributors: Victor Avram, Sergio Jimenez, Eagon Meng, Wenhan Zhang
 </p>
-<p style="text-align: center;">
+<p align="center">
   <img src="https://user-images.githubusercontent.com/29682604/117849295-2bfd1200-b252-11eb-8d74-c186ab51c77e.png">
 </p>
 
