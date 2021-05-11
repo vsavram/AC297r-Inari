@@ -1,37 +1,38 @@
-## Welcome to GitHub Pages
+# Modeling the Effects of Gene Perturbations in Maize
 
-You can use the [editor on GitHub](https://github.com/vsavram/AC297r-Inari/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+<p style="text-align: center;">
+  Contributors: Victor Avram, Sergio Jimenez, Eagon Meng, Wenhan Zhang
+</p>
+<p style="text-align: center;">
+  <img src="https://user-images.githubusercontent.com/29682604/117849295-2bfd1200-b252-11eb-8d74-c186ab51c77e.png">
+</p>
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Introduction and Motivation
+---
 
-### Markdown
+As a plant breeding technology company, Inari's work comprises three high-level stages: (1) using computational methods to better understand biology, especially at the transcriptional level; (2) genetic editing of crops; and (3) delivery of altered genetic information to specific parts of the plant. By genetically modifying seeds, Inari seeks to increase crop diversity, increase yield so as to make efficient use of land, water, and fertilizer, and ultimately make socio-economic impacts by ensuring food security.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Our project sits within the first stage of Inari's work and seeks to answer "what are the effects of gene perturbations and are gene expression levels informative of one another?" Tackling these questions would provide Inari with a better understanding maize biology and would subsequently allow seed genetic editing with greater confidence. Essentially, we hope to document the relationships across genes, creating a network that can act as a look-up table to inform Inari of the genetic effects and side-effects of perturbing particular maize genes. These insights will help alleviate the risk of observing unexpected effects later in the breeding process. We have explored several methods to determine whether a subset (ideally a small subset) of genes can be used as predictors for the expression levels of the remaining genes in the maize genome. Through this process, we are able to realize relationships across genes and ultimately allow for more targeted gene modifications.
 
-```markdown
-Syntax highlighted code block
+## Data and EDA
+---
 
-# Header 1
-## Header 2
-### Header 3
+## Feature Selection and Regression-Based Methods
+---
 
-- Bulleted
-- List
+### Standard Feature Selection + Regression
 
-1. Numbered
-2. List
+### Landmark 1000 + Regression
 
-**Bold** and _Italic_ and `Code` text
+## Autoencoder-Based Methods
+---
 
-[Link](url) and ![Image](src)
-```
+### Autoencoder + Regression: Learning Structures of Expression Data
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Imputation using an Iterative Variational Autoencoder
 
-### Jekyll Themes
+## Graph Neural Networks
+---
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/vsavram/AC297r-Inari/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## References
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
