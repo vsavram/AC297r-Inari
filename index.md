@@ -1,7 +1,13 @@
 # Modeling the Effects of Gene Perturbations in Maize
 
 <p align="center">
+  Harvard Institute for Applied Computational Science
+</p>
+<p align="center">
   Contributors: Victor Avram, Sergio Jimenez, Eagon Meng, Wenhan Zhang
+</p>
+<p align="center">
+    IACS Faculty: Chris Tanner and Phoebe Wong
 </p>
 <p align="center">
   <img src="https://user-images.githubusercontent.com/29682604/117849295-2bfd1200-b252-11eb-8d74-c186ab51c77e.png">
