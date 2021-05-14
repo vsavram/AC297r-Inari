@@ -19,6 +19,8 @@ Information regarding Harvard capstone research project can be found [here](http
 ## Introduction and Motivation
 ---
 
+We are a team of master's students at Harvard and MIT. In our master's capstone, we collaborated with Inari, an AgTech unicorn start-up, over a semester to work on a project that is significant to their but they do not have the bandwidth to tackle.
+
 As a plant breeding technology company, Inari's work comprises three high-level stages: (1) using computational methods to better understand biology, especially at the transcriptional level; (2) genetic editing of crops; and (3) delivery of altered genetic information to specific parts of the plant. By genetically modifying seeds, Inari seeks to increase crop diversity, increase yield so as to make efficient use of land, water, and fertilizer, and ultimately make socio-economic impacts by ensuring food security.
 
 Our project sits within the first stage of Inari's work and seeks to answer "what are the effects of gene perturbations and are gene expression levels informative of one another?" Tackling these questions would provide Inari with a better understanding maize biology and would subsequently allow seed genetic editing with greater confidence. Essentially, we hope to document the relationships across genes, creating a network that can act as a look-up table to inform Inari of the genetic effects and side-effects of perturbing particular maize genes. These insights will help alleviate the risk of observing unexpected effects later in the breeding process. We have explored several methods to determine whether a subset (ideally a small subset) of genes can be used as predictors for the expression levels of the remaining genes in the maize genome. Through this process, we are able to realize relationships across genes and ultimately allow for more targeted gene modifications.
@@ -36,6 +38,17 @@ The raw gene expression counts are first converted to transcripts per million (T
 ### Standard Feature Selection + Regression
 
 ### Landmark 1000 + Regression
+
+Discovering the [Connectivity Map L1000](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5990023/) project was a lot of excitement for us. After we finished the initial feature selectiona and regression methods, we realized we need to search for a better way to select predictor genes. L1000 tackled the exact same problem but in the human genome. By selecting 1000 "landmark" genes in the human genome, the team was able to predict the expression values of the rest of the genes up to 81% accuracy. We thought it's a perfect fit for our problem even though we had a few things going for us. Firstly, their data is perturbation-driven, while ours only has natural variability; Secondly, we are training on 4 times as many genes as they were; yet we only have 480 samples and they have 1.3 million profiles. These concerns actually ended up being too significant to ignore. 
+
+The steps for selecting the landmark genes are as follows: Firstly, do PCA to reduce the dimension. Second, use K-means to cluster the genes. Thirdly, derive a consensus matrix to see how frequently do each pair of genes end up in the same cluster. Next, we get the stable pairs and again group them together. We then situate them back in the initial PCA and select the centroid. This centroid is pronounced as one landmark gene. We then discard the entire cluster and repeat the process until we get 1000 landmark genes.
+
+![image](https://user-images.githubusercontent.com/37491296/118337065-eefa7f00-b4e0-11eb-9546-b3d24cb7f5e0.png)
+
+
+However, we later realized that this method is not suited for our data, which is not perturbation-driven. As such, our data lacks variability and genes end up being grouped in large clusters. Therefore, each time we select a centroid, we end up throwing the entire cluster of genes away and lose a lot of information. 
+
+In addition, since we had four times more genes, it means filtering through a consensus matrix 16 times as large. Without a more efficient algorithm and a good parallel implementation, the computation became too expensive for us in terms of memory and time. 
 
 ## Autoencoder-Based Methods
 ---
