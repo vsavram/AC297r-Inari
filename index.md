@@ -45,14 +45,6 @@ As previously mentioned, we used two different approaches to select the features
 
 
 
-
-
-
-
-![image](https://user-images.githubusercontent.com/78141110/118339181-16077f80-b4e6-11eb-8414-5bb8741a8a69.png)
-
-
-
 ---
 
 ### Standard Feature Selection + Regression
