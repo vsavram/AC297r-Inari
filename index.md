@@ -19,8 +19,6 @@ Information regarding Harvard capstone research project can be found [here](http
 ## Introduction and Motivation
 ---
 
-We are a team of master's students at Harvard and MIT. In our master's capstone, we collaborated with Inari, an AgTech unicorn start-up, over a semester to work on a project that is significant to their but they do not have the bandwidth to tackle.
-
 As a plant breeding technology company, Inari's work comprises three high-level stages: (1) using computational methods to better understand biology, especially at the transcriptional level; (2) genetic editing of crops; and (3) delivery of altered genetic information to specific parts of the plant. By genetically modifying seeds, Inari seeks to increase crop diversity, increase yield so as to make efficient use of land, water, and fertilizer, and ultimately make socio-economic impacts by ensuring food security.
 
 Our project sits within the first stage of Inari's work and seeks to answer "what are the effects of gene perturbations and are gene expression levels informative of one another?" Tackling these questions would provide Inari with a better understanding maize biology and would subsequently allow seed genetic editing with greater confidence. Essentially, we hope to document the relationships across genes, creating a network that can act as a look-up table to inform Inari of the genetic effects and side-effects of perturbing particular maize genes. These insights will help alleviate the risk of observing unexpected effects later in the breeding process. We have explored several methods to determine whether a subset (ideally a small subset) of genes can be used as predictors for the expression levels of the remaining genes in the maize genome. Through this process, we are able to realize relationships across genes and ultimately allow for more targeted gene modifications.
@@ -33,22 +31,33 @@ The data is comprised of gene expression values derived from 26 individual maize
 The raw gene expression counts are first converted to transcripts per million (TPM). The steps of this preprocessing technique are as follows: 1) Divide the expression level by the length of the given gene in kilobases, 2) Divide by the summation of gene length normalized expression levels in the given sample, 3) Multiply by 1,000,000. The process of converting raw counts to TPM first normalized the expression levels by the gene length. More fragments are likely to map to longer genes and vice versa for shorter genes. These gene length normalized expression levels are then adjusted for sequencing depth. Sequencing depth refers to the total counts attributed to a given sample. Given the inability to sequence all samples at the same time and with the same machinery, as well as the possibility that different protocols were used for different samples, sequencing depth normalization is an important step in being able to make comparisons across samples. Lastly, the expression levels are scaled by a large factor.
 
 ## Feature Selection and Regression-Based Methods
+
+For our first method, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses random forest regression to calculate the pairwise correlation between genes. Then for each gene, we selected as features the ones that are most correlated to it.  2) We Calculated the Coefficient of Variation of expression of all the genes, sorting them and using the 1000 most expressive genes as features. The models used were the following: a) Linear Regression, Lasso Regression, Lars, Random Forest Regression (as the baseline models), Ada Boosting Regression and Gradient Boosting (as the ensemble models). Additionally, we used Neural Networks using dense layers with ReLU activation function. 
+
+An ensemble is a combination of simple individual models that together create a more powerful new model. We used two types of ensemble models: 1) Bootstrap Aggregating, through Random Forest and 2) Boosting.
+
+An ensemble is a combination of simple individual models that together create a more powerful new model. There are two types of Ensemble Models: a) Bootstrap Aggregating, is a simple ensemble technique in which we build many independent predictors/models/learners and combine them using model averaging techniques. (e.g., weighted average, majority vote or normal average). The essence is to select N bootstrap samples, fit a classifier on each of these samples, and train the models in parallel. One example of a Bootstrap Aggregating model is Random Forest, where decision trees are trained in parallel. The results of all classifiers/regression are then averaged into a Bootstrap Aggregating classifier/regression. b) On the other hand,  Boosting allow us to train models sequentially, instead of modelling them parallelly. Each model focuses on where the previous classifier performed poorly. Several types of Boosting are: 1) AdaBoost (Adaptive Boosting) which works by putting more weight on difficult to classify instances and less on those already handled well. The weights are re-assigned to each instance, with higher weights to incorrectly classified instances. 2) Gradient boosting which relies on the idea to repetitively leverage the patterns in residuals and strengthen a model with weak predictions and make it better. Once we reach a stage that residuals do not have any pattern that could be modeled, we can stop modeling residuals (otherwise it might lead to overfitting); we use residuals as target variables in the sequential models. 
+
+As previously mentioned, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses random forest regression to calculate the pairwise correlation between genes. Then, for each gene we selected as features the ones that have above 0.01 or more correlation  2) Getting both standard deviation and average of expressions across all samples per gene, dividing and then sorting (Coefficient of Variation) Take the 1000 most expressive genes and use them as features to predict the next 1000 most expressive genes. Train and run Models using a 70-30 train-test split Calculate R^2s of the test set 
+
+
+[image](https://user-images.githubusercontent.com/78141110/118341505-66cea680-b4ed-11eb-90f7-240306342055.png)
+
+
+
+
+
+
+
+![image](https://user-images.githubusercontent.com/78141110/118339181-16077f80-b4e6-11eb-8414-5bb8741a8a69.png)
+
+
+
 ---
 
 ### Standard Feature Selection + Regression
 
 ### Landmark 1000 + Regression
-
-Discovering the [Connectivity Map L1000](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5990023/) project was a lot of excitement for us. After we finished the initial feature selectiona and regression methods, we realized we need to search for a better way to select predictor genes. L1000 tackled the exact same problem but in the human genome. By selecting 1000 "landmark" genes in the human genome, the team was able to predict the expression values of the rest of the genes up to 81% accuracy. We thought it's a perfect fit for our problem even though we had a few things going for us. Firstly, their data is perturbation-driven, while ours only has natural variability; Secondly, we are training on 4 times as many genes as they were; yet we only have 480 samples and they have 1.3 million profiles. These concerns actually ended up being too significant to ignore. 
-
-The steps for selecting the landmark genes are as follows: Firstly, do PCA to reduce the dimension. Second, use K-means to cluster the genes. Thirdly, derive a consensus matrix to see how frequently do each pair of genes end up in the same cluster. Next, we get the stable pairs and again group them together. We then situate them back in the initial PCA and select the centroid. This centroid is pronounced as one landmark gene. We then discard the entire cluster and repeat the process until we get 1000 landmark genes.
-
-<!-- ![image](https://user-images.githubusercontent.com/37491296/118337065-eefa7f00-b4e0-11eb-9546-b3d24cb7f5e0.png) -->
-![image](./images/kmeans.png)
-
-However, we later realized that this method is not suited for our data, which is not perturbation-driven. As such, our data lacks variability and genes end up being grouped in large clusters. Therefore, each time we select a centroid, we end up throwing the entire cluster of genes away and lose a lot of information. 
-
-In addition, since we had four times more genes, it means filtering through a consensus matrix 16 times as large. Without a more efficient algorithm and a good parallel implementation, the computation became too expensive for us in terms of memory and time. 
 
 ## Autoencoder-Based Methods
 ---
@@ -88,9 +97,7 @@ Scenario 2: 50% of entries missing | 0.7217 | 0.8923   | 0.8941   |
 
 
 ## Graph Neural Networks
-Our journey thus far gave us insight into how classical approaches fare in our problem domain, as well as the importance of feature selection and problem modeling. While our construction of imputation models was in a sense the most "correct" framing of the issue, by nature of the methodology employed the analytical power of our models are uncertain. In particular, it's not clear how genes interact with one another, and any correlations in expression levels we see in our models certain do not correspond to causation.
-
-To address these issues, we turned towards attempting to model our problem with methodology that better abstracts the underlying physiology. Graph neural networks are, unlike feed forward neural networks, models with non-Euclidean structure with no clear path of information flow or standard metrics for similarity or distance. By working on a graph, nodes reason
+---
 
 ## References
 
