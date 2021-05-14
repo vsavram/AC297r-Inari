@@ -9,6 +9,9 @@
 <p align="center">
     IACS Faculty: Chris Tanner and Phoebe Wong
 </p>
+
+Information regarding Harvard capstone research project can be found [here](https://www.capstone.iacs.seas.harvard.edu/).
+
 <p align="center">
   <img src="https://user-images.githubusercontent.com/29682604/117849295-2bfd1200-b252-11eb-8d74-c186ab51c77e.png">
 </p>
