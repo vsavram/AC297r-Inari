@@ -43,8 +43,8 @@ Discovering the [Connectivity Map L1000](https://www.ncbi.nlm.nih.gov/pmc/articl
 
 The steps for selecting the landmark genes are as follows: Firstly, do PCA to reduce the dimension. Second, use K-means to cluster the genes. Thirdly, derive a consensus matrix to see how frequently do each pair of genes end up in the same cluster. Next, we get the stable pairs and again group them together. We then situate them back in the initial PCA and select the centroid. This centroid is pronounced as one landmark gene. We then discard the entire cluster and repeat the process until we get 1000 landmark genes.
 
-![image](https://user-images.githubusercontent.com/37491296/118337065-eefa7f00-b4e0-11eb-9546-b3d24cb7f5e0.png)
-
+<!-- ![image](https://user-images.githubusercontent.com/37491296/118337065-eefa7f00-b4e0-11eb-9546-b3d24cb7f5e0.png) -->
+![image](./images/kmeans.png)
 
 However, we later realized that this method is not suited for our data, which is not perturbation-driven. As such, our data lacks variability and genes end up being grouped in large clusters. Therefore, each time we select a centroid, we end up throwing the entire cluster of genes away and lose a lot of information. 
 
@@ -88,7 +88,9 @@ Scenario 2: 50% of entries missing | 0.7217 | 0.8923   | 0.8941   |
 
 
 ## Graph Neural Networks
----
+Our journey thus far gave us insight into how classical approaches fare in our problem domain, as well as the importance of feature selection and problem modeling. While our construction of imputation models was in a sense the most "correct" framing of the issue, by nature of the methodology employed the analytical power of our models are uncertain. In particular, it's not clear how genes interact with one another, and any correlations in expression levels we see in our models certain do not correspond to causation.
+
+To address these issues, we turned towards attempting to model our problem with methodology that better abstracts the underlying physiology. Graph neural networks are, unlike feed forward neural networks, models with non-Euclidean structure with no clear path of information flow or standard metrics for similarity or distance. By working on a graph, nodes reason
 
 ## References
 
