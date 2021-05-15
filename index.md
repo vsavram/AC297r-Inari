@@ -88,9 +88,21 @@ Scenario 2: 50% of entries missing | 0.7217 | 0.8923   | 0.8941   |
 
 
 ## Graph Neural Networks
+---
+
 Our journey thus far gave us insight into how classical approaches fare in our problem domain, as well as the importance of feature selection and problem modeling. While our construction of imputation models was in a sense the most "correct" framing of the issue, by nature of the methodology employed the analytical power of our models are uncertain. In particular, it's not clear how genes interact with one another, and any correlations in expression levels we see in our models certain do not correspond to causation.
 
-To address these issues, we turned towards attempting to model our problem with methodology that better abstracts the underlying physiology. Graph neural networks are, unlike feed forward neural networks, models with non-Euclidean structure with no clear path of information flow or standard metrics for similarity or distance. By working on a graph, nodes reason
+To address these issues, we turned towards attempting to model our problem with methodology that better abstracts the underlying physiology. Graph neural networks are, unlike feed forward neural networks, models with non-Euclidean structure with no clear path of information flow or standard metrics for similarity or distance. By working on a graph, nodes reason *locally*, with edge indexes that define which other nodes to flow information either to, or from.
+
+We worked primarily with a paper by Hasibi et al. (2020) on a graph auto-encoder approach for predicting unobserved expression levels in a gene network. In this approach, Hasibi proposes two primary schemes: an embedding-based prediction task, and an end-to-end imputation task. The architecture for the prediction task relies on using graph auto-encoders to create an embedding space, and then the prediction is done one-by-one for each target gene of interest using classical regression techniques. For the imputation task, the model attempts to impute all the values of a randomly selected mask across both samples and genes, with training done against a loss function that takes into account the mask.
+<p align="center">
+  <img src="./images/hasibi.png" width=600>
+</p>
+
+Working with this approach was incredibly informative of the difficulties behind framing our problem, and illuminated a number of interesting research areas. 
+
+
 
 ## References
 
+Hasibi, Ramin, and Tom Michoel. “A Graph Feature Auto-Encoder for the Prediction of Unobserved Node Features on Biological Networks.” ArXiv:2005.03961 [Cs, q-Bio, Stat], 2, Dec. 2020. arXiv.org, http://arxiv.org/abs/2005.03961.
