@@ -34,11 +34,10 @@ The raw gene expression counts are first converted to transcripts per million (T
 
 For our first method, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses random forest regression to calculate the pairwise correlation between genes. Then for each gene, we selected as features the ones that are most correlated to it.  2) We Calculated the Coefficient of Variation of expression of all the genes, sorting them and using the 1000 most expressive genes as features. The models used were the following: a) Linear Regression, Lasso Regression, Lars, Random Forest Regression (as the baseline models), Ada Boosting Regression and Gradient Boosting (as the ensemble models). Additionally, we used Neural Networks using dense layers with ReLU activation function. 
 
-An ensemble is a combination of simple individual models that together create a more powerful new model. We used two types of ensemble models: 1) Bootstrap Aggregating, through Random Forest and 2) Boosting.
 
 An ensemble is a combination of simple individual models that together create a more powerful new model. There are two types of Ensemble Models: a) Bootstrap Aggregating, is a simple ensemble technique in which we build many independent predictors/models/learners and combine them using model averaging techniques. (e.g., weighted average, majority vote or normal average). The essence is to select N bootstrap samples, fit a classifier on each of these samples, and train the models in parallel. One example of a Bootstrap Aggregating model is Random Forest, where decision trees are trained in parallel. The results of all classifiers/regression are then averaged into a Bootstrap Aggregating classifier/regression. b) On the other hand,  Boosting allow us to train models sequentially, instead of modelling them parallelly. Each model focuses on where the previous classifier performed poorly. Several types of Boosting are: 1) AdaBoost (Adaptive Boosting) which works by putting more weight on difficult to classify instances and less on those already handled well. The weights are re-assigned to each instance, with higher weights to incorrectly classified instances. 2) Gradient boosting which relies on the idea to repetitively leverage the patterns in residuals and strengthen a model with weak predictions and make it better. Once we reach a stage that residuals do not have any pattern that could be modeled, we can stop modeling residuals (otherwise it might lead to overfitting); we use residuals as target variables in the sequential models. 
 
-As previously mentioned, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses random forest regression to calculate the pairwise correlation between genes. Then, for each gene we selected as features the ones that have above 0.01 or more correlation  2) Getting both standard deviation and average of expressions across all samples per gene, dividing and then sorting (Coefficient of Variation) Take the 1000 most expressive genes and use them as features to predict the next 1000 most expressive genes. Train and run Models using a 70-30 train-test split Calculate R^2s of the test set 
+As previously mentioned, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses random forest regression to calculate the pairwise correlation between genes. Then, for each gene we selected as features the ones that have above 0.01 or more correlation. Train and run Models using a 70-30 train-test split and calculate R^2s of the test set   2) Getting both standard deviation and average of expressions across all samples per gene, dividing and then sorting (Coefficient of Variation) Take the 1000 most expressive genes and use them as features to predict the next 1000 most expressive genes. Train and run Models using a 70-30 train-test split and calculate R^2s of the test set. Below, the reader can find the results of the models for each feature selection method.
 
 
 | --- | Mean of R<sup>2</sup> GENIE3 |   Mean of R<sup>2</sup> 1000 Most Expressive Genes |
@@ -49,6 +48,14 @@ Lars Regression | 0.49 | -7.88   |
 Random Forest Regression | -1.61 | 0.9   |
 Ada Boosting Regression | 0.58 | -2.31   | 
 Gradient Boosting  | 0.63 | -4.08   | 
+
+As the reader can notice, even though the 1000 most expressive genes method allows us to use the same features for all predictions, results were significantly worse than in GENIE3. 
+
+As a second approach, we used Neural Networks without doing any feature selection. We used multiple dense layers. In Dense Layers, each neuron receives input from all the neurons of the previous layer. Regarding the activation function, we decided to use the rectified linear activation function (ReLu), which is a simple calculation that returns the value provided as input directly, or the value 0.0 if the input is 0.0 or less. This is an activation function that looks and acts like a linear function, but is, in fact, a nonlinear function which allows complex relationships in the data to be learned, this being a significant advantage against function as the sigmoid and tanh functions, which are subject to saturation and are sensitive to changes around their mid-point of their input. Even though this sounds good, the results were disappointing as we got a negative test Rsquare (-2.07) as it happened with the 1000 most expressive genes.
+
+
+
+
 
 ---
 
