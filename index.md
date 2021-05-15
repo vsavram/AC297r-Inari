@@ -16,6 +16,8 @@ Information regarding Harvard capstone research project can be found [here](http
   <img src="https://user-images.githubusercontent.com/29682604/117849295-2bfd1200-b252-11eb-8d74-c186ab51c77e.png">
 </p>
 
+[IACS Fair Poster Video](https://drive.google.com/file/d/1x42kzHdfuKNw8Spl849WYD48IgNj41KN/view)
+
 ## Introduction and Motivation
 ---
 
@@ -120,12 +122,22 @@ We worked primarily with a paper by Hasibi et al. (2020) on a graph auto-encoder
   <img src="./images/hasibi.png" width=600>
 </p>
 
-To construct our network, we elected to use an external source of information in the form of Protein-Protein Interaction (PPI) networks, publically available for maize (Zhu, 2016). 
+To construct our network, we elected to use an external source of information in the form of Protein-Protein Interaction (PPI) networks, publically available for maize (Zhu, 2016). This restricts our subset of genes to around 10,000 candidates, each of which are now connected by an edge to a small local set of related genes. These genes then represent nodes in the network that pass information regarding expression levels to one another in any given update cycle.
 
-Working with this approach was incredibly informative of the difficulties behind framing our problem, and illuminated a number of interesting research areas. We were able to contact and work with Hasibi, and identified a subtle bug regarding data leakage in the training phase of the imputation scheme. In particular, this was due to the nature of the graph neural network having access to the entire dataset during the training phase, where message passing was determined 
+Working with this approach was incredibly informative of the difficulties behind framing our problem, and illuminated a number of interesting research areas. We were able to contact and work with Hasibi, and identified a subtle bug regarding data leakage in the training phase of the imputation scheme. In particular, this was due to the nature of the graph neural network having access to the entire dataset during the training phase, where message passing was determined by the edge indexes (in our case the PPI network). In the implementation, we discovered that this leakage of test node information to train nodes occurred in the imputation scheme, where the only mechanism for masking the data was a mask on the loss function, and no restrictions on the message passing.
 <p align="center">
   <img src="./images/schemes.png" width=600>
 </p>
+
+Another issue of the end-to-end imputation approach is the rigidity of the assumptions of the model, where the layer architecture assumes the training sample size as the size of output and input layers. This means that future analysis needs to arbitrarily structure data to this format, reducing generalizability. Hasibi has confirmed this is an area of active ongoing research, and we have learned much in delving into the details of these non-conventional models.
+
+## Conclusion
+---
+
+Our project brought us on a comprehensive journey through exploring data quality, a wide variety of applicable modeling approaches, and the ever-ongoing search for interpretable analysis backed by principled methods. Through baseline models in regression we confirmed the complexity of our fundamentally graph-like domain, while L1000 landmark gene approaches taught us the importance of perturbation-driven data sets. Variational autoencoders in imputation methodologies yielded the best accuracies, at the cost of flexibility and interpretability. Our final approach through graph neural networks brought us to a deep and involved understanding (and some debugging) of some of the latest research in this area, and we hope that these lessons, insights, and research prove useful.
+
+
+
 
 
 
