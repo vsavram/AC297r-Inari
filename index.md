@@ -65,7 +65,11 @@ As a second approach, we used Neural Networks without doing any feature selectio
 
 ### Landmark 1000 + Regression
 
-Discovering the [Connectivity Map L1000](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5990023/) project was a lot of excitement for us. After we finished the initial feature selectiona and regression methods, we realized we need to search for a better way to select predictor genes. L1000 tackled the exact same problem but in the human genome. By selecting 1000 "landmark" genes in the human genome, the team was able to predict the expression values of the rest of the genes up to 81% accuracy. We thought it's a perfect fit for our problem even though we had a few things going for us. Firstly, their data is perturbation-driven, while ours only has natural variability; Secondly, we are training on 4 times as many genes as they were; yet we only have 480 samples and they have 1.3 million profiles. These concerns actually ended up being too significant to ignore. 
+Discovering the [Connectivity Map L1000](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5990023/) project was a lot of excitement for us. After we finished the initial feature selectiona and regression methods, we realized we need to search for a better way to select predictor genes. L1000 tackled the exact same problem but in the human genome. By selecting 1000 "landmark" genes in the human genome, the team was able to predict the expression values of the rest of the genes up to 81% accuracy. We thought it's a perfect fit for our problem even though we had a few things going for us. Firstly, their data is perturbation-driven, while ours only has natural variability; Secondly, we are training on 4 times as many genes as they were; yet we only have 480 samples and they have 1.3 million profiles. These concerns actually ended up being too significant to ignore.
+
+<p align="center">
+  <img src="./images/kmeans.png" width=400>
+</p>
 
 The steps for selecting the landmark genes are as follows: Firstly, do PCA to reduce the dimension. Second, use K-means to cluster the genes. Thirdly, derive a consensus matrix to see how frequently do each pair of genes end up in the same cluster. Next, we get the stable pairs and again group them together. We then situate them back in the initial PCA and select the centroid. This centroid is pronounced as one landmark gene. We then discard the entire cluster and repeat the process until we get 1000 landmark genes.
 
