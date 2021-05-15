@@ -4,7 +4,7 @@
   Harvard Institute for Applied Computational Science
 </p>
 <p align="center">
-  Contributors: Victor Avram, Sergio Jimenez, Eagon Meng, Wenhan Zhang
+  Contributors: Victor Avram, Sergio Miguel Moya Jimenez, Eagon Meng, Wenhan Zhang
 </p>
 <p align="center">
     IACS Faculty: Chris Tanner and Phoebe Wong
