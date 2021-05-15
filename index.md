@@ -47,7 +47,7 @@ An ensemble is a combination of simple individual models that together create a 
 
 As previously mentioned, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses Random Forest regression to calculate the pairwise correlation between genes. Then, for each gene we selected as features the ones that have above 0.01 or more correlation. Train and run Models using a 70-30 train-test split and calculate R^2s of the test set   2) Getting both standard deviation and average of expressions across all samples per gene, dividing and then sorting (Coefficient of Variation) Take the 1000 most expressive genes and use them as features to predict the next 1000 most expressive genes. Train and run Models using a 70-30 train-test split and calculate R^2s of the test set. Below, the reader can find the results of the models for each feature selection method.
 
-
+<!-- 
 | --- | Mean of R<sup>2</sup> GENIE3 |   Mean of R<sup>2</sup> 1000 Most Expressive Genes |
 |:---------------:|:---------------:|:--------:|
 Linear Regression | 0.49 | -1.9e+16   |   
@@ -55,7 +55,11 @@ Lasso Regression | 0.51 | -27.07   |
 Lars Regression | 0.49 | -7.88   |
 Random Forest Regression | 0.65 | -1.61   |
 Ada Boosting Regression | 0.58 | -2.31   | 
-Gradient Boosting  | 0.63 | -4.08   | 
+Gradient Boosting  | 0.63 | -4.08   |  -->
+
+<p align="center">
+  <img src="./images/table.png" width=800>
+</p>
 
 As the reader can notice, even though the 1000 most expressive genes method allows us to use the same features for all predictions, results were significantly worse than in GENIE3. 
 
