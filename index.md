@@ -49,7 +49,7 @@ As previously mentioned, we used two different approaches to select the features
 Linear Regression | 0.49 | -1.9e+16   |   
 Lasso Regression | 0.51 | -27.07   | 
 Lars Regression | 0.49 | -7.88   |
-Random Forest Regression | 0.65 | 0.9   |
+Random Forest Regression | 0.65 | -1.61   |
 Ada Boosting Regression | 0.58 | -2.31   | 
 Gradient Boosting  | 0.63 | -4.08   | 
 
