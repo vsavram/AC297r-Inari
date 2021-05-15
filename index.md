@@ -32,6 +32,10 @@ The raw gene expression counts are first converted to transcripts per million (T
 
 ## Feature Selection and Regression-Based Methods
 
+---
+
+### Standard Feature Selection + Regression
+
 For our first method, we used two different approaches to select the features for our gene predictions: 1) Genie3, which uses random forest regression to calculate the pairwise correlation between genes. Then for each gene, we selected as features the ones that are most correlated to it.  2) We Calculated the Coefficient of Variation of expression of all the genes, sorting them and using the 1000 most expressive genes as features. The models used were the following: a) Linear Regression, Lasso Regression, Lars, Random Forest Regression (as the baseline models), Ada Boosting Regression and Gradient Boosting (as the ensemble models). Additionally, we used Neural Networks using dense layers with ReLU activation function. 
 
 
@@ -54,12 +58,6 @@ As the reader can notice, even though the 1000 most expressive genes method allo
 As a second approach, we used Neural Networks without doing any feature selection. We used multiple dense layers. In Dense Layers, each neuron receives input from all the neurons of the previous layer. Regarding the activation function, we decided to use the rectified linear activation function (ReLu), which is a simple calculation that returns the value provided as input directly, or the value 0.0 if the input is 0.0 or less. This is an activation function that looks and acts like a linear function, but is, in fact, a nonlinear function which allows complex relationships in the data to be learned, this being a significant advantage against function as the sigmoid and tanh functions, which are subject to saturation and are sensitive to changes around their mid-point of their input. Even though this sounds good, the results were disappointing as we got a negative test Rsquare (-2.07) as it happened with the 1000 most expressive genes.
 
 
-
-
-
----
-
-### Standard Feature Selection + Regression
 
 ### Landmark 1000 + Regression
 
